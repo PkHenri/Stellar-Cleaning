@@ -1,7 +1,7 @@
 window.onload = function() {
     function getGameSize() {
         return {
-            width: 800,
+            width: 600,
             height: document.documentElement.clientHeight
         };
     }
@@ -12,7 +12,13 @@ window.onload = function() {
         type: Phaser.AUTO,
         width: size.width,
         height: size.height,
-        scene: [SceneGame]
+        scene: [SceneGame],
+        physics: {
+            default: 'arcade',
+            arcade: {
+                
+            }
+        }
     };
 
     let game = new Phaser.Game(config);
