@@ -31,19 +31,13 @@ class SceneGame extends Phaser.Scene{
             this.bg.setPosition(gameSize.width /  2,  gameSize.height / 2);
         });
         // criação da nave(player) no centro em baixo
+        let nave = Array('naveDano0', 'naveDano1', 'naveDano2', 'naveDano3');
+
         this.player = this.add.sprite(
             this.scale.width / 2,
             this.scale.height - 80,
-            'naveDano0'
+            nave[0]
         );
-
-        // animação do tiro
-        this.anims.create({
-            key: 'tiro_anim',
-            frames: this.anims.generateFrameNumbers('tiroPrincipal', {start: 0, end: 7}),
-            frameRate: 15,
-            repeat: -1
-        });
 
         // grupo para os tiros
         this.tiros = this.physics.add.group();
@@ -79,7 +73,6 @@ class SceneGame extends Phaser.Scene{
             const tiro = this.tiros.create(this.player.x, this.player.y - 40, 'tiroPrincipal');
             tiro.setVelocityY(-400); // velocidade do tiro
             tiro.setScale(0.5); // ajusta o tamanho do tiro
-            console.log('espaço funcionando')
         }
         // remover tiros que sairem da tela
         this.tiros.children.each(function(tiro) {

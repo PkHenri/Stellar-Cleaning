@@ -12,7 +12,7 @@ window.onload = function() {
         type: Phaser.AUTO,
         width: size.width,
         height: size.height,
-        scene: [SceneGame],
+        scene: [SceneMenu, SceneGame],
         physics: {
             default: 'arcade',
             arcade: {
