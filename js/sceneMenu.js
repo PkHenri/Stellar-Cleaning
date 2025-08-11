@@ -49,7 +49,7 @@ class SceneMenu extends Phaser.Scene {
 
         // clique no botão jogar
         btnJogar.on('pointerdown', () => {
-            this.scene.start('sceneGame');
+            this.scene.start('sceneSelect');
         });
         
     }
