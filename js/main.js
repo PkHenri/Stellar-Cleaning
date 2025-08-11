@@ -2,7 +2,7 @@ window.onload = function() {
     function getGameSize() {
         return {
             width: 600,
-            height: document.documentElement.clientHeight
+            height: Math.max(document.documentElement.clientHeight, 400)
         };
     }
 
