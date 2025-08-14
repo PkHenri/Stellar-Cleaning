@@ -6,16 +6,21 @@ class SceneGame extends Phaser.Scene{
 
     preload(){
         this.load.image('background', 'assets/images/background.png'); // carrega a imagem de fundo
-        // carrega os sprites da nave(player)
-        this.load.image('naveUm', 'assets/images/Nave/naveUm.png');
-        this.load.image('naveDois', 'assets/images/Nave/naveDois.png');
-        this.load.image('naveTres', 'assets/images/Nave/naveTres.png');
+
+        // carrega os sprites da nave
+        this.load.image('nave1', '../assets/images/Nave/naveUm.png');
+        this.load.image('nave2', '../assets/images/Nave/naveDois.png');
+        this.load.image('nave3', '../assets/images/Nave/naveTres.png');
 
         // destruição das naves
         this.load.spritesheet('explosaoN1', 'assets/images/Nave/destruicaoNave/explosaoN1.png', {frameWidth: 64, frameHeight: 64});
 
         // carrega os sprites do tiro da nave
-        this.load.image('tiroPrincipal', 'assets/images/Projeteis/tiroPrincipal.png');
+        this.load.spritesheet('tiroNave1', '/assets/images/Projeteis/nave1Tiro.png', {frameWidth: 18, frameHeight: 38});
+
+        this.load.spritesheet('tiroNave2', '/assets/images/Projeteis/nave2Tiro.png', {frameWidth: 10, frameHeight: 16});
+
+        this.load.spritesheet('tiroNave3', '/assets/images/Projeteis/nave3Tiro.png', {frameWidth: 64, frameHeight: 48});
 
         // carrega sprites dos inimigos
         this.load.image('inimigoA', 'assets/images/Inimigos/inimigo1.png');
@@ -39,15 +44,27 @@ class SceneGame extends Phaser.Scene{
             'background'
         );
 
+        // pega a nave escolhida
+        let naveEscolhida = window.gameData.naveEscolhida;
+        let naveStats = window.gameData.naveConfig[naveEscolhida];
+
         
         // criação da nave(player) no centro em baixo
-        let nave = Array('naveUm', 'naveDois', 'naveTres');
         this.player = this.physics.add.sprite(
             this.scale.width / 2,
             this.scale.height - 80,
-            nave[0]
+            naveStats.sprite
         );
         this.player.setScale(1.5);
+
+        // define os satars da nave
+        this.playerStats = {
+            dano: naveStats.dano,
+            velocidadeTiro: naveStats.velocidadeTiro,
+            velocidade: naveStats.velocidade,
+            tiroSprite: naveStats.tiroSprite
+        };
+
 
         // animação da explosão da nave
         this.anims.create({
@@ -56,6 +73,28 @@ class SceneGame extends Phaser.Scene{
             frameRate: 20,
             hideOnComplete: true
         });
+
+        // animação dos tiros
+        this.anims.create({
+            key: 'animTiroNave1',
+            frames: this.anims.generateFrameNumbers('tiroNave1', {start: 0, end: 3}),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'animTiroNave2',
+            frames: this.anims.generateFrameNumbers('tiroNave2', {start: 0, end: 3}),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'animTiroNave3',
+            frames: this.anims.generateFrameNumbers('tiroNave3', {start: 0, end: 5}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+
 
         // Inimigos (lixo)
 
@@ -102,9 +141,12 @@ class SceneGame extends Phaser.Scene{
         // grupo para os tiros
         this.tiros = this.physics.add.group();
 
+        // controle de delay do tiro
+        this.ultimoDisparo = 0;
+
         // colisão entre tiros e inimigos
         this.physics.add.overlap(this.tiros, this.inimigos, (tiro, inimigo) => {
-            inimigo.vida -= 5; // dano do tiro
+            inimigo.vida -= this.playerStats.dano; // dano do tiro
             tiro.destroy();
             if (inimigo.vida <= 0) {
                 let explosao = this.add.sprite(inimigo.x, inimigo.y, 'explosao').setScale(1.2);
@@ -179,10 +221,19 @@ class SceneGame extends Phaser.Scene{
             this.player.y += 6;
         }
         // disparo tiro da nave
-        if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
-            const tiro = this.tiros.create(this.player.x, this.player.y - 40, 'tiroPrincipal');
-            tiro.setVelocityY(-400); // velocidade do tiro
-            tiro.setScale(0.5); // ajusta o tamanho do tiro
+        if (this.spaceKey.isDown) {
+            let naveEscolhida = window.gameData.naveEscolhida;
+            let naveStats = window.gameData.naveConfig[naveEscolhida];
+
+            let tempoAtual = this.time.now;
+            if (tempoAtual - this.ultimoDisparo > naveStats.tiroDelay){
+                const tiro = this.tiros.create(this.player.x, this.player.y - 40, naveStats.tiroSprite);
+                tiro.setVelocityY(-400); // velocidade do tiro
+                tiro.setScale(naveStats.tiroScale); // ajusta o tamanho do tiro
+                tiro.play(naveStats.tiroAnim);
+
+                this.ultimoDisparo = tempoAtual;
+            }
         }
         // remover tiros que sairem da tela
         this.tiros.children.each(function(tiro) {

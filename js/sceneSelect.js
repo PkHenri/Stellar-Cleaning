@@ -34,6 +34,7 @@ class SceneSelect extends Phaser.Scene{
         const btn_selecionarN1 = this.add.image(this.scale.width / 2, this.scale.height / 2 - 200, 'selectN1').setInteractive().setScale(0.5); // Ajuste de Y e escala
             //click
             btn_selecionarN1.on('pointerdown', () => {
+            window.gameData.naveEscolhida = 'naveUm';
             this.scene.start('sceneGame');
         });
 
@@ -41,6 +42,7 @@ class SceneSelect extends Phaser.Scene{
         const btn_selecionarN2 = this.add.image(this.scale.width / 2, this.scale.height / 2 + 1, 'selectN2').setInteractive().setScale(0.5); // Ajuste de Y e escala
             //click
             btn_selecionarN2.on('pointerdown', () => {
+            window.gameData.naveEscolhida = 'naveDois';
             this.scene.start('sceneGame');
         });
 
@@ -48,6 +50,7 @@ class SceneSelect extends Phaser.Scene{
         const btn_selecionarN3 = this.add.image(this.scale.width / 2, this.scale.height / 2 + 200, 'selectN3').setInteractive().setScale(0.5); // Ajuste de Y e escala
             //click
             btn_selecionarN3.on('pointerdown', () => {
+            window.gameData.naveEscolhida = 'naveTres';
             this.scene.start('sceneGame');
         });
 
