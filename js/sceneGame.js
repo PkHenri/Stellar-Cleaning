@@ -94,12 +94,6 @@ class SceneGame extends Phaser.Scene{
             repeat: -1
         });
 
-
-
-        // Inimigos (lixo)
-
-        let inimigos = Array('inimigoA', 'inimigoB', 'inimigoC', 'inimigoD', 'inimigoE', 'inimigoF', 'inimigoG', 'inimigoH', 'inimigoI', );
-
         // configuração dos inimigos
         this.inimigosConfig = [
             {key: 'inimigoA', vida: 30, velocidade: 80, pontos: 3},
@@ -180,7 +174,7 @@ class SceneGame extends Phaser.Scene{
         // tecla espaço
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        // raguste da tela
+        // reajuste da tela
         this.scale.on('resize', (gameSize) => {
             this.bg.setSize(gameSize.width, gameSize.height);
             this.bg.setPosition(gameSize.width /  2,  gameSize.height / 2);
