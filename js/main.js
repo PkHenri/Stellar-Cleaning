@@ -1,3 +1,17 @@
+window.gameStyles = {
+    defaultText: {
+        fontSize: '28px',
+        color: '#fff',
+        fontFamily: 'stellarFont'
+    },
+
+    scoreText: {
+        fontSize: '28px',
+        color: '#fff',
+        fontFamily: 'stellarFont'
+    }
+}
+
 window.gameData = {
         naveEscolhida: null,
         naveConfig: {
@@ -51,13 +65,11 @@ window.onload = function() {
         width: size.width,
         height: size.height,
         parent: 'game-area',
-        scene: [SceneMenu, SceneSelect, SceneGame],
+        scene: [SceneMenu, SceneSelect, SceneGame, SceneVictory],
         physics: {
             default: 'arcade',
-            arcade: {
-                
-            }
-        }
+            arcade: {}
+        },
     };
 
     let game = new Phaser.Game(config);

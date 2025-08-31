@@ -82,7 +82,7 @@ class SceneMenu extends Phaser.Scene {
                 scaleX: 1.1,
                 scaleY: 1.1,
                 duration: 200,
-                ease: 'Powe2'
+                ease: 'Power2'
             });
         });
 
@@ -92,7 +92,7 @@ class SceneMenu extends Phaser.Scene {
                 scaleX: 1.0,
                 scaleY: 1.0,
                 duration: 200,
-                ease: 'Powe2'
+                ease: 'Power2'
             });
         });
 

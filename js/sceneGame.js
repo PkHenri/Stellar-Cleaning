@@ -108,7 +108,7 @@ class SceneGame extends Phaser.Scene{
         ];
 
         this.inimigos = this.physics.add.group();
-        this.inimigosRestantes = 50;
+        this.inimigosRestantes = 80;
         this.maxInimigosNaTela = 1;
         this.spawnInterval = 2000; //ms
 
@@ -160,10 +160,7 @@ class SceneGame extends Phaser.Scene{
 
         // pontuação
         this.pontuacao = 0;
-        this.placarText = this.add.text(this.scale.width - 30, 20, 'Pontos: 0', {
-            fontSize: '28px',
-            color: '#fff'
-        }).setOrigin(1, 0).setDepth(10);
+        this.placarText = this.add.text(this.scale.width - 30, 20, 'Pontos: 0', window.gameStyles.scoreText).setOrigin(1, 0).setDepth(10);
 
         // adiciona controles do teclado
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -180,22 +177,8 @@ class SceneGame extends Phaser.Scene{
             this.bg.setPosition(gameSize.width /  2,  gameSize.height / 2);
             this.placarText.setPosition(gameSize.width - 30, 20);
         });
-    }
 
-    spawnInimigo() {
-        if (this.inimigos.countActive(true) >= this.maxInimigosNaTela || this.inimigosRestantes <= 0) return;
-
-        // sorteia o inimigo
-        let tipo = Phaser.Utils.Array.GetRandom(this.inimigosConfig);
-        let x = Phaser.Math.Between(50, this.scale.width - 50);
-        let y = -50;
-        let inimigo = this.inimigos.create(x, y, tipo.key);
-        inimigo.vida = tipo.vida;
-        inimigo.setVelocityY(tipo.velocidade);
-        inimigo.setData('tipo', tipo.key);
-        inimigo.setData('pontos', tipo.pontos);
-
-        this.inimigosRestantes--;
+        
     }
 
     update(){
@@ -248,6 +231,29 @@ class SceneGame extends Phaser.Scene{
         // limita a nave dentro da tela
         this.player.x = Phaser.Math.Clamp(this.player.x, 0, this.scale.width);
         this.player.y = Phaser.Math.Clamp(this.player.y, 0, this.scale.height);
+
+
+        if (this.inimigosRestantes <= 0 && this.inimigos.countActive(true) == 0) {
+            localStorage.setItem('pontuacaoFinal', this.pontuacao);
+            this.scene.start('sceneVictory');
+        }
         
+    }
+
+    
+    spawnInimigo() {
+        if (this.inimigos.countActive(true) >= this.maxInimigosNaTela || this.inimigosRestantes <= 0) return;
+
+        // sorteia o inimigo
+        let tipo = Phaser.Utils.Array.GetRandom(this.inimigosConfig);
+        let x = Phaser.Math.Between(50, this.scale.width - 50);
+        let y = -50;
+        let inimigo = this.inimigos.create(x, y, tipo.key);
+        inimigo.vida = tipo.vida;
+        inimigo.setVelocityY(tipo.velocidade);
+        inimigo.setData('tipo', tipo.key);
+        inimigo.setData('pontos', tipo.pontos);
+
+        this.inimigosRestantes--;
     }
 }
