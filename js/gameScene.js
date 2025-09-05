@@ -1,6 +1,6 @@
-class SceneGame extends Phaser.Scene{
+class GameScene extends Phaser.Scene{
     constructor(){
-        super('sceneGame');
+        super('gameScene');
         this.scrollSpeed = 1.5;
     }
 
