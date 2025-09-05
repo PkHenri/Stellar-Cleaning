@@ -235,7 +235,7 @@ class GameScene extends Phaser.Scene{
 
         if (this.inimigosRestantes <= 0 && this.inimigos.countActive(true) == 0) {
             localStorage.setItem('pontuacaoFinal', this.pontuacao);
-            this.scene.start('sceneVictory');
+            this.scene.start('victoryScene');
         }
         
     }

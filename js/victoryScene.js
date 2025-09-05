@@ -93,7 +93,7 @@ class VictoryScene extends Phaser.Scene {
         });
 
         jogarNovamente.on('pointerdown', () => {
-            this.scene.start('sceneSelect');
+            this.scene.start('selectScene');
         });
 
         const menu = this.add.image(this.scale.width/2, this.scale.height/2+300, 'menu').setInteractive();
@@ -119,7 +119,7 @@ class VictoryScene extends Phaser.Scene {
         });
 
         menu.on('pointerdown', () => {
-            this.scene.start('sceneMenu');
+            this.scene.start('menuScene');
         });
     }
 

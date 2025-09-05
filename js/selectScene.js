@@ -81,7 +81,7 @@ class SelectScene extends Phaser.Scene{
 
     selectShipAndStartGame(shipType) {
         window.gameData.naveEscolhida = shipType;
-        this.scene.start('sceneGame');
+        this.scene.start('gameScene');
     }
 
     update() {
