@@ -90,7 +90,7 @@ class GameScene extends Phaser.Scene{
         ];
 
         this.inimigos = this.physics.add.group();
-        this.inimigosRestantes = 3;
+        this.inimigosRestantes = 80;
         this.maxInimigosNaTela = 1;
         this.spawnInterval = 2000; //ms
     }
