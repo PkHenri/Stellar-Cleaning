@@ -192,7 +192,8 @@ class GameScene extends Phaser.Scene{
     createShipCollision() {
         this.physics.add.overlap(this.player, this.inimigos, (player, inimigo) => {
             let explosao = this.add.sprite(player.x, player.y, 'explosao').setScale(1.2);
-            explosao.play('explodir')
+            explosao.play('explodir'),
+            star
         }, null, this);
     }
 
@@ -288,5 +289,8 @@ class GameScene extends Phaser.Scene{
             localStorage.setItem('pontuacaoFinal', this.pontuacao);
             this.scene.start('victoryScene');
         }
+    }
+    startGameoverScene() {
+        this.scene.start('gameoverScene');
     }
 }
