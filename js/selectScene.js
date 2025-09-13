@@ -22,6 +22,12 @@ class SelectScene extends Phaser.Scene {
         this.createNavigationButtons();
     }
 
+    resetScene() {
+        this.shipButtons = [];
+        this.currentIndex = 0;
+        this.tweens.killAll();
+    }
+
     createBackgroud() {
         this.bgSelect = this.add.tileSprite(
             this.scale.width / 2,
@@ -51,6 +57,7 @@ class SelectScene extends Phaser.Scene {
         this.setupShipButtonInteraction(btnSelectN2, 'naveDois');
         this.setupShipButtonInteraction(btnSelectN3, 'naveTres');
 
+        this.shipButtons = [];
         this.shipButtons.push(btnSelectN1, btnSelectN2, btnSelectN3);
     }
 

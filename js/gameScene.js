@@ -90,7 +90,7 @@ class GameScene extends Phaser.Scene{
         ];
 
         this.inimigos = this.physics.add.group();
-        this.inimigosRestantes = 80;
+        this.inimigosRestantes = 3;
         this.maxInimigosNaTela = 1;
         this.spawnInterval = 2000; //ms
     }
@@ -100,7 +100,7 @@ class GameScene extends Phaser.Scene{
         this.time.addEvent({
             delay: 5000,
             callback: () => {
-                if (this.maxInimigosNaTela <8) this.maxInimigosNaTela++;
+                if (this.maxInimigosNaTela < 8) this.maxInimigosNaTela++;
                 if (this.spawnInterval > 600) this.spawnInterval -= 200;
             },
             callbackScope: this,
@@ -122,7 +122,7 @@ class GameScene extends Phaser.Scene{
         this.anims.create({
             key: 'explodir',
             frames: this.anims.generateFrameNumbers('explosao', {start: 2, end: 8}),
-            frameRate: 20,
+            frameRate: 10,
             hideOnComplete: true
         });
     }
@@ -193,7 +193,13 @@ class GameScene extends Phaser.Scene{
         this.physics.add.overlap(this.player, this.inimigos, (player, inimigo) => {
             let explosao = this.add.sprite(player.x, player.y, 'explosao').setScale(1.2);
             explosao.play('explodir'),
-            star
+
+            
+            
+            this.time.delayedCall(250, () => {
+                this.startGameoverScene();
+            });
+
         }, null, this);
     }
 
@@ -286,11 +292,12 @@ class GameScene extends Phaser.Scene{
 
     startVictoryScene() {
         if (this.inimigosRestantes <= 0 && this.inimigos.countActive(true) == 0) {
-            localStorage.setItem('pontuacaoFinal', this.pontuacao);
-            this.scene.start('victoryScene');
+                localStorage.setItem('pontuacaoFinal', this.pontuacao);
+                this.scene.start('victoryScene');
         }
     }
     startGameoverScene() {
+        localStorage.setItem('pontuacaoFinal', this.pontuacao);
         this.scene.start('gameoverScene');
     }
 }
