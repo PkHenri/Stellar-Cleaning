@@ -5,7 +5,7 @@ class GameoverScene extends Phaser.Scene {
 
     preload() {
         this.load.image('backgroud', 'assets/images/background.png');
-        this.load.image('gameoverText', '../assets/images/endGame/gameover.png');
+        this.load.image('gameoverText', 'assets/images/endGame/gameover.png');
         this.load.image('jogarNovamente', 'assets/images/endGame/jogarNovamente.png')
         this.load.image('menu', 'assets/images/endGame/menu.png')
     }

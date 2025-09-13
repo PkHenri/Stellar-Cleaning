@@ -194,7 +194,7 @@ class GameScene extends Phaser.Scene{
             let explosao = this.add.sprite(player.x, player.y, 'explosao').setScale(1.2);
             explosao.play('explodir'),
             star
-        }, null, this.startGameoverScene());
+        }, null, this);
     }
 
     createScore() {
