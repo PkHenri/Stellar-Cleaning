@@ -47,9 +47,11 @@ class MenuScene extends Phaser.Scene {
         ).setScale(0.7).setInteractive();
 
         this.setupConfigButtonAnimation(btnConfig);
+        this.setupConfigButtonInteractions(btnConfig);
     }
 
-    setupConfigButtonAnimation(button) {
+    //adiciona efeitos visuais (hover e rotação)
+    setupConfigButtonAnimation(button) { 
         button.on('pointerover', () => {
             this.applyHoverEffect(button, 0.8);
             this.applyRotationEffect(button);  
@@ -58,6 +60,13 @@ class MenuScene extends Phaser.Scene {
         button.on('pointerout', () => {
             this.applyHoverEffect(button,  0.7);
             this.tweens.killTweensOf(button);
+        });
+    }
+
+    //define a ação quando o botão é clicado
+    setupConfigButtonInteractions(button) {
+        button.on('pointerdown', () => {
+            this.startQuemSomos();
         });
     }
 
@@ -150,6 +159,10 @@ class MenuScene extends Phaser.Scene {
     update() {
         // efeito de movimentação do fundo
         this.bgMenu.tilePositionY -= this.scrollSpeed;
+    }
+
+    startQuemSomos(){
+        this.scene.start('quemSomos')
     }
 
 }
