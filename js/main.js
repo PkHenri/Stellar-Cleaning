@@ -20,30 +20,74 @@ window.gameData = {
                 tiroSprite: 'tiroNave1',
                 tiroAnim: 'animTiroNave1',
                 tiroScale: 0.8,
-                tiroDelay: 200,
-                dano: 5,
+                tiroDelay: 150,
+                dano: 20,
                 velocidadeTiro: 400,
-                velocidade: 6
+                velocidade: 6,
+
+                tiroNum2: {
+                    sprite: 'tiro2Nave1',
+                    anim: 'animTiro2Nave1',
+                    dano: 35,
+                    delay: 300
+                },
+
+                tiroNum3: {
+                    sprite: 'tiro3Nave1',
+                    anim: 'animTiro3Nave1',
+                    dano: 60,
+                    delay: 500
+                }
             },
+
             'naveDois': {
                 sprite: 'nave2',
                 tiroSprite: 'tiroNave2',
                 tiroAnim: 'animTiroNave2',
-                tiroScale: 2.0,
-                tiroDelay: 600,
-                dano: 10,
-                velocidadeTiro: 10,
-                velocidade: 5
+                tiroScale: 2.5,
+                tiroDelay: 250,
+                dano: 25,
+                velocidadeTiro: 350,
+                velocidade: 5,
+
+                tiroNum2: {
+                    sprite: 'tiro2Nave2',
+                    anim: 'animTiro2Nave2',
+                    dano: 40,
+                    delay: 400
+                },
+
+                tiroNum3: {
+                    sprite: 'tiro3Nave2',
+                    anim: 'animTiro3Nave2',
+                    dano: 70,
+                    delay: 600
+                }
             },
+
             'naveTres': {
                 sprite: 'nave3',
                 tiroSprite: 'tiroNave3',
                 tiroAnim: 'animTiroNave3',
                 tiroScale: 1.9,
-                tiroDelay: 400,
-                dano: 8,
-                velocidadeTiro: 320,
-                velocidade: 7
+                tiroDelay: 200,
+                dano: 22,
+                velocidadeTiro: 380,
+                velocidade: 7,
+
+                tiroNum2: {
+                    sprite: 'tiro2Nave3',
+                    anim: 'animTiro2Nave3',
+                    dano: 38,
+                    delay: 350
+                },
+
+                tiroNum3: {
+                    sprite: 'tiro3Nave3',
+                    anim: 'animTiro3Nave3',
+                    dano: 65,
+                    delay: 550
+                }
             }
         }
     }

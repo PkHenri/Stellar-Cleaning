@@ -17,8 +17,16 @@ class GameScene extends Phaser.Scene{
 
         // carrega os sprites do tiro da nave
         this.load.spritesheet('tiroNave1', '/assets/images/Projeteis/nave1Tiro.png', {frameWidth: 18, frameHeight: 38});
+        this.load.spritesheet('tiro2Nave1', '/assets/images/Projeteis/nave1Tiro2.png', {frameWidth: 18, frameHeight: 38});
+        this.load.spritesheet('tiro3Nave1', '/assets/images/Projeteis/nave1Tiro3.png', {frameWidth: 18, frameHeight: 38});
+
         this.load.spritesheet('tiroNave2', '/assets/images/Projeteis/nave2Tiro.png', {frameWidth: 10, frameHeight: 16});
+        this.load.spritesheet('tiro2Nave2', '/assets/images/Projeteis/nave2Tiro2.png', {frameWidth: 10, frameHeight: 16});
+        this.load.spritesheet('tiro3Nave2', '/assets/images/Projeteis/nave2Tiro3.png', {frameWidth: 10, frameHeight: 16});
+
         this.load.spritesheet('tiroNave3', '/assets/images/Projeteis/nave3Tiro.png', {frameWidth: 64, frameHeight: 48});
+        this.load.spritesheet('tiro2Nave3', '/assets/images/Projeteis/nave3Tiro2.png', {frameWidth: 64, frameHeight: 48});
+        this.load.spritesheet('tiro3Nave3', '/assets/images/Projeteis/nave3Tiro3.png', {frameWidth: 64, frameHeight: 48});
 
         // carrega sprites dos inimigos
         this.load.image('inimigoA', 'assets/images/Inimigos/inimigo1.png');
@@ -78,21 +86,26 @@ class GameScene extends Phaser.Scene{
 
     createEnemyConfig() {
         this.inimigosConfig = [
-            {key: 'inimigoA', vida: 30, velocidade: 80, pontos: 3},
-            {key: 'inimigoB', vida: 30, velocidade: 80, pontos: 3},
-            {key: 'inimigoC', vida: 20, velocidade: 110, pontos: 2},
-            {key: 'inimigoD', vida: 20, velocidade: 110, pontos: 2},
-            {key: 'inimigoE', vida: 20, velocidade: 110, pontos: 2},
-            {key: 'inimigoF', vida: 10, velocidade: 140, pontos: 1},
-            {key: 'inimigoG', vida: 10, velocidade: 140, pontos: 1},
-            {key: 'inimigoH', vida: 10, velocidade: 140, pontos: 1},
-            {key: 'inimigoI', vida: 20, velocidade: 110, pontos: 2}
+            // categoria Pesada - tiro L - mais vida, mais lentos, mais pontos
+            {key: 'inimigoA', vida: 80, velocidade: 60, pontos: 15, categoria: 'pesado'},
+            {key: 'inimigoB', vida: 80, velocidade: 60, pontos: 15, categoria: 'pesado'},
+
+            // categoria Média - tiro K - vida média, velocidade média
+            {key: 'inimigoC', vida: 50, velocidade: 90, pontos: 8, categoria: 'medio'},
+            {key: 'inimigoD', vida: 50, velocidade: 90, pontos: 8, categoria: 'medio'},
+            {key: 'inimigoE', vida: 50, velocidade: 90, pontos: 8, categoria: 'medio'},
+
+            // categoria leve - tiro básico - menos vida, mais rapido
+            {key: 'inimigoF', vida: 25, velocidade: 140, pontos: 4, categoria: 'leve'},
+            {key: 'inimigoG', vida: 25, velocidade: 140, pontos: 4, categoria: 'leve'},
+            {key: 'inimigoH', vida: 25, velocidade: 140, pontos: 4, categoria: 'leve'},
+            {key: 'inimigoI', vida: 25, velocidade: 110, pontos: 4, categoria: 'leve'}
         ];
 
         this.inimigos = this.physics.add.group();
-        this.inimigosRestantes = 80;
-        this.maxInimigosNaTela = 1;
-        this.spawnInterval = 2000; //ms
+        this.inimigosRestantes = 100;
+        this.maxInimigosNaTela = 2;
+        this.spawnInterval = 1800;
     }
 
     createTimeDificulty() {
@@ -146,6 +159,43 @@ class GameScene extends Phaser.Scene{
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create({
+        key: 'animTiro2Nave1',
+        frames: this.anims.generateFrameNumbers('tiro2Nave1', {start: 0, end: 3}),
+        frameRate: 12,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'animTiro3Nave1',
+        frames: this.anims.generateFrameNumbers('tiro3Nave1', {start: 0, end: 3}),
+        frameRate: 15,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'animTiro2Nave2',
+        frames: this.anims.generateFrameNumbers('tiro2Nave2', {start: 0, end: 3}),
+        frameRate: 12,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'animTiro3Nave2',
+        frames: this.anims.generateFrameNumbers('tiro3Nave2', {start: 0, end: 3}),
+        frameRate: 15,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'animTiro2Nave3',
+        frames: this.anims.generateFrameNumbers('tiro2Nave3', {start: 0, end: 5}),
+        frameRate: 12,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'animTiro3Nave3',
+        frames: this.anims.generateFrameNumbers('tiro3Nave3', {start: 0, end: 5}),
+        frameRate: 15,
+        repeat: -1
+    });
     }
 
     createPlayer() {
@@ -174,32 +224,128 @@ class GameScene extends Phaser.Scene{
         this.tiros = this.physics.add.group();
         // controle de delay do tiro
         this.ultimoDisparo = 0;
+        this.ultimoDisparo2 = 0;
+        this.ultimoDisparo3 = 0;
 
         this.physics.add.overlap(this.tiros, this.inimigos, (tiro, inimigo) => {
-            inimigo.vida -= this.playerStats.dano; // dano do tiro
+            let danoBase = tiro.getData('dano') || this.playerStats.dano;
+            let tipoTiro = tiro.getData('tipoTiro') || 'basico';
+            let categoriaInimigo = inimigo.getData('categoria');
+
+            let {danoFinal, pontosBonus, efetividade} = this.calcularEfetividade (danoBase, tipoTiro, categoriaInimigo);
+
+            inimigo.vida -= danoFinal;
+
+            this.mostrarEfeitoEfetividade(inimigo.x, inimigo.y, efetividade);
+
             tiro.destroy();
+
             if (inimigo.vida <= 0) {
                 let explosao = this.add.sprite(inimigo.x, inimigo.y, 'explosao').setScale(1.2);
                 explosao.play('explodir');
                 // adiciona pontos
-                this.pontuacao += inimigo.getData('pontos') || 0;
+                this.pontosBase = inimigo.getData('pontos') || 0;
+                let pontosTotal = this.pontosBase + pontosBonus;
+
+                this.pontuacao += pontosTotal;
+
                 this.placarText.setText('Pontos: ' + this.pontuacao);
                 inimigo.destroy();
             }
         }, null, this);
     }
 
+    mostrarEfeitoEfetividade(x, y, efetividade) {
+    let cor = '#FFFFFF';
+    let texto = '';
+    
+    switch(efetividade) {
+        case 'super_efetivo':
+            cor = '#00FF00';
+            texto = 'SUPER EFETIVO!';
+            break;
+        case 'efetivo':
+            cor = '#FFFF00';
+            texto = 'Efetivo';
+            break;
+        case 'pouco_efetivo':
+            cor = '#FF4444';
+            texto = 'Pouco efetivo';
+            break;
+        default:
+            return; // Não mostra texto para dano normal
+    }
+    
+    let feedbackText = this.add.text(x, y - 30, texto, {
+        fontSize: '14px',
+        color: cor,
+        fontFamily: 'stellarFont'
+    }).setOrigin(0.5);
+    
+    // Animação do texto subindo e desaparecendo
+    this.tweens.add({
+        targets: feedbackText,
+        y: y - 60,
+        alpha: 0,
+        duration: 1000,
+        ease: 'Power2',
+        onComplete: () => feedbackText.destroy()
+    });
+}
+
+    calcularEfetividade(danoBase, tipoTiro, categoriaInimigo) {
+        let multiplicadorDano = 1;
+        let pontosBonus = 0;
+        let efetividade = 'normal';
+
+        switch (tipoTiro) {
+            case 'basico': // espaço e J
+                if (categoriaInimigo === 'leve') {
+                    multiplicadorDano = 1.5;
+                    pontosBonus = 2;
+                    efetividade = 'efetivo';
+                }
+                break;
+            case 'medio': // K
+                if (categoriaInimigo === 'medio') {
+                    multiplicadorDano = 2.0;
+                    pontosBonus = 5;
+                    efetividade = 'super_efetivo';
+                } else if (categoriaInimigo === 'leve' || categoriaInimigo === 'pesado') {
+                    multiplicadorDano = 0.5;
+                    pontosBonus = 0;
+                    efetividade = 'pouco_efetivo';
+                }
+                break;
+
+            case 'pesado': // L
+                if (categoriaInimigo === 'pesado') {
+                    multiplicadorDano  = 2.5;
+                    pontosBonus = 10;
+                    efetividade = 'super_efetivo'; 
+                } else {
+                    multiplicadorDano = 0.3;
+                    pontosBonus = 0;
+                    efetividade = 'pouco_efetivo';
+                }
+                break;
+        }
+
+        return {
+            danoFinal: Math.floor(danoBase * multiplicadorDano),
+            pontosBonus: pontosBonus,
+            efetividade: efetividade
+        };
+    }
+
     createShipCollision() {
         this.physics.add.overlap(this.player, this.inimigos, (player, inimigo) => {
             let explosao = this.add.sprite(player.x, player.y, 'explosao').setScale(1.2);
-            explosao.play('explodir'),
-
-            
-            
+            explosao.play('explodir');
+   
             this.time.delayedCall(250, () => {
                 this.startGameoverScene();
             });
-
         }, null, this);
     }
 
@@ -215,6 +361,7 @@ class GameScene extends Phaser.Scene{
         this.cursors = this.input.keyboard.createCursorKeys();
         this.wasd = this.input.keyboard.addKeys('W,A,S,D');
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.shot = this.input.keyboard.addKeys('J,K,L');
     }
 
     
@@ -226,10 +373,12 @@ class GameScene extends Phaser.Scene{
         let x = Phaser.Math.Between(50, this.scale.width - 50);
         let y = -50;
         let inimigo = this.inimigos.create(x, y, tipo.key);
+
         inimigo.vida = tipo.vida;
         inimigo.setVelocityY(tipo.velocidade);
         inimigo.setData('tipo', tipo.key);
         inimigo.setData('pontos', tipo.pontos);
+        inimigo.setData('categoria', tipo.categoria);
 
         this.inimigosRestantes--;
     }
@@ -250,20 +399,61 @@ class GameScene extends Phaser.Scene{
     }
 
     updateShipShooting() {
-        if (this.spaceKey.isDown) {
-            let naveEscolhida = window.gameData.naveEscolhida;
-            let naveStats = window.gameData.naveConfig[naveEscolhida];
-
-            let tempoAtual = this.time.now;
+        let naveEscolhida = window.gameData.naveEscolhida;
+        let naveStats = window.gameData.naveConfig[naveEscolhida];
+        let tempoAtual = this.time.now;
+        
+        if (this.spaceKey.isDown || this.shot.J.isDown) {
             if (tempoAtual - this.ultimoDisparo > naveStats.tiroDelay){
-                const tiro = this.tiros.create(this.player.x, this.player.y - 40, naveStats.tiroSprite);
-                tiro.setVelocityY(-400); // velocidade do tiro
-                tiro.setScale(naveStats.tiroScale); // ajusta o tamanho do tiro
-                tiro.play(naveStats.tiroAnim);
+                this.createShot(
+                    naveStats.tiroSprite, 
+                    naveStats.tiroAnim, 
+                    naveStats.tiroScale,
+                    naveStats.dano,
+                    'basico'
+                );
 
                 this.ultimoDisparo = tempoAtual;
             }
         }
+
+        if (this.shot.K.isDown) {
+            if (tempoAtual - this.ultimoDisparo2 > naveStats.tiroNum2.delay) {
+                console.log('Criando tiro especial 2!');
+                this.createShot(
+                    naveStats.tiroNum2.sprite,
+                    naveStats.tiroNum2.anim,
+                    naveStats.tiroScale,
+                    naveStats.tiroNum2.dano,
+                    'medio'
+                );
+
+                this.ultimoDisparo2 = tempoAtual;
+            }
+        }
+
+        if (this.shot.L.isDown) {
+            if (tempoAtual - this.ultimoDisparo3 > naveStats.tiroNum3.delay) {
+                this.createShot(
+                    naveStats.tiroNum3.sprite,
+                    naveStats.tiroNum3.anim,
+                    naveStats.tiroScale,
+                    naveStats.tiroNum3.dano,
+                    'pesado'
+                );
+
+                this.ultimoDisparo3 = tempoAtual;
+            }
+        }
+    }
+
+    createShot(sprite, animation, scale, dano, tipoTiro = 'basico') {
+        const tiro = this.tiros.create(this.player.x, this.player.y - 40, sprite);
+                tiro.setVelocityY(-400); // velocidade do tiro
+                tiro.setScale(scale); // ajusta o tamanho do tiro
+                tiro.play(animation);
+                tiro.setData('dano', dano);
+                tiro.setData('tipoTiro', tipoTiro)
     }
 
     updateRemoveShotOutScreen() {
