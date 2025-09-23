@@ -360,7 +360,6 @@ class GameScene extends Phaser.Scene{
     createGameKeys() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.wasd = this.input.keyboard.addKeys('W,A,S,D');
-        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.shot = this.input.keyboard.addKeys('J,K,L');
     }
 
@@ -403,7 +402,7 @@ class GameScene extends Phaser.Scene{
         let naveStats = window.gameData.naveConfig[naveEscolhida];
         let tempoAtual = this.time.now;
         
-        if (this.spaceKey.isDown || this.shot.J.isDown) {
+        if (this.shot.J.isDown) {
             if (tempoAtual - this.ultimoDisparo > naveStats.tiroDelay){
                 this.createShot(
                     naveStats.tiroSprite, 
@@ -419,7 +418,6 @@ class GameScene extends Phaser.Scene{
 
         if (this.shot.K.isDown) {
             if (tempoAtual - this.ultimoDisparo2 > naveStats.tiroNum2.delay) {
-                console.log('Criando tiro especial 2!');
                 this.createShot(
                     naveStats.tiroNum2.sprite,
                     naveStats.tiroNum2.anim,

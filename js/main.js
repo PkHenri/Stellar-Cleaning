@@ -109,7 +109,7 @@ window.onload = function() {
         width: size.width,
         height: size.height,
         parent: 'game-area',
-        scene: [MenuScene, SelectScene, GameScene, VictoryScene, GameoverScene],
+        scene: [MenuScene, TutorialScene, SelectScene, GameScene, VictoryScene, GameoverScene],
         physics: {
             default: 'arcade',
             arcade: {}

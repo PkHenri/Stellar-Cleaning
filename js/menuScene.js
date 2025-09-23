@@ -129,7 +129,7 @@ class MenuScene extends Phaser.Scene {
 
     setupPlayButtonInteractions(button) {
         button.on('pointerdown', () => {
-            this.startSelectScene();
+            this.startTutorialScene();
         });
     }
 
@@ -152,17 +152,16 @@ class MenuScene extends Phaser.Scene {
             });
     }
 
-    startSelectScene() {
-        this.scene.start('selectScene');
-    }
-
-    update() {
-        // efeito de movimentação do fundo
-        this.bgMenu.tilePositionY -= this.scrollSpeed;
+    startTutorialScene() {
+        this.scene.start('tutorialScene');
     }
 
     startQuemSomos(){
         this.scene.start('quemSomos')
     }
-
+    
+    update() {
+        // efeito de movimentação do fundo
+        this.bgMenu.tilePositionY -= this.scrollSpeed;
+    }
 }
