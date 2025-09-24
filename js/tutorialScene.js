@@ -38,13 +38,13 @@ class TutorialScene extends Phaser.Scene {
             this.scale.width/2,
             this.scale.height/2-60,
             'tutorial'
-        );
+        ).setScale(0.7);
     }
 
     createPlayButton() {
         const btnJogar = this.add.image(
             this.scale.width/2,
-            this.scale.height/2+370,
+            this.scale.height/2+270,
             'btnJogar'
         ).setInteractive();
 

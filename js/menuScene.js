@@ -11,6 +11,8 @@ class MenuScene extends Phaser.Scene {
         this.load.image('audioMutado', 'assets/images/Menu/audioMutado.png');
         this.load.image('logo', 'assets/images/Menu/logo.png');
         this.load.image('btnJogar', 'assets/images/Menu/btnJogar.png');
+
+        this.load.audio('musicaMenu', 'assets/sounds/musicaMenu.mp3');
     }
 
     create() {
@@ -20,6 +22,28 @@ class MenuScene extends Phaser.Scene {
         this.createAudioButton();
         this.createLogo();
         this.createPlayButton();
+        this.createMenuMusic();
+    }
+
+    createMenuMusic() {
+        if (window.gameAudio.enabled) {
+            if (!this.musicaMenu) {
+                this.musicaMenu = this.sound.add('musicaMenu', {
+                    volume: window.gameAudio.volume * 0.008,
+                    loop: true
+                });
+            }
+            
+            if (!this.musicaMenu.isPlaying) {
+                this.musicaMenu.play();
+            }
+        }
+    }
+
+    stopMenuMusic() {
+        if (this.musicaMenu && this.musicaMenu.isPlaying) {
+            this.musicaMenu.stop();
+        }
     }
 
     createBackgroud() {
@@ -71,19 +95,31 @@ class MenuScene extends Phaser.Scene {
     }
 
     createAudioButton() {
-        let audioStatus = Array('audioDesmutado', 'audioMutado');
-        let audioIndex = 0;
         let btnAudio = this.add.image(
             this.scale.width-40,
             40,
-            audioStatus[audioIndex]
+            window.gameAudio.enabled ? 'audioDesmutado' : 'audioMutado'
         ).setScale(0.7).setInteractive();
 
         this.setupAudioButtonAnimation(btnAudio);
 
         btnAudio.on('pointerdown', () => {
-            audioIndex = (audioIndex + 1) % audioStatus.length;
-            btnAudio.setTexture(audioStatus[audioIndex]);
+            window.gameAudio.enabled = !window.gameAudio.enabled;
+
+            btnAudio.setTexture(window.gameAudio.enabled ? 'audioDesmutado' : 'audioMutado');
+
+            if (!window.gameAudio.enabled) {
+                this.sound.stopAll();
+                if (this.musicaMenu) {
+                    this.musicaMenu.stop();
+                }
+            } else {
+                if (this.musicaMenu && !this.musicaMenu.isPlaying) {
+                    this.musicaMenu.play();
+                } else if (!this.musicaMenu) {
+                    this.createMenuMusic();
+                }
+            }
         });
     }
 
@@ -153,6 +189,7 @@ class MenuScene extends Phaser.Scene {
     }
 
     startTutorialScene() {
+        this.stopMenuMusic();
         this.scene.start('tutorialScene');
     }
 

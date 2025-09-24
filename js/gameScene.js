@@ -12,6 +12,12 @@ class GameScene extends Phaser.Scene{
         this.load.image('nave2', '../assets/images/Nave/naveDois.png');
         this.load.image('nave3', '../assets/images/Nave/naveTres.png');
 
+        // carrega os sons
+        this.load.audio('somTiroNave1', 'assets/sounds/somTiroNave1.mp3');
+        this.load.audio('somTiroNave2', 'assets/sounds/somTiroNave2.mp3');
+        this.load.audio('somTiroNave3', 'assets/sounds/somTiroNave3.mp3');
+        this.load.audio('somExplosao', 'assets/sounds/somExplosao.mp3');
+
         // destruição das naves
         this.load.spritesheet('explosao', 'assets/images/Nave/destruicaoNave/explosao.png', {frameWidth: 64, frameHeight: 64});
 
@@ -243,6 +249,14 @@ class GameScene extends Phaser.Scene{
             if (inimigo.vida <= 0) {
                 let explosao = this.add.sprite(inimigo.x, inimigo.y, 'explosao').setScale(1.2);
                 explosao.play('explodir');
+                
+                // som explosão
+                if (window.gameAudio.enabled) {
+                    this.sound.play('somExplosao', {
+                        volume: window.gameAudio.volume * 0.06
+                    });
+                }
+
                 // adiciona pontos
                 this.pontosBase = inimigo.getData('pontos') || 0;
                 let pontosTotal = this.pontosBase + pontosBonus;
@@ -342,6 +356,13 @@ class GameScene extends Phaser.Scene{
         this.physics.add.overlap(this.player, this.inimigos, (player, inimigo) => {
             let explosao = this.add.sprite(player.x, player.y, 'explosao').setScale(1.2);
             explosao.play('explodir');
+
+            // som explosão
+            if (window.gameAudio.enabled) {
+                this.sound.play('somExplosao', {
+                    volume: window.gameAudio.volume * 0.1
+                });
+            }
    
             this.time.delayedCall(250, () => {
                 this.startGameoverScene();
@@ -404,6 +425,9 @@ class GameScene extends Phaser.Scene{
         
         if (this.shot.J.isDown) {
             if (tempoAtual - this.ultimoDisparo > naveStats.tiroDelay){
+
+                this.playShootSound();
+
                 this.createShot(
                     naveStats.tiroSprite, 
                     naveStats.tiroAnim, 
@@ -418,6 +442,9 @@ class GameScene extends Phaser.Scene{
 
         if (this.shot.K.isDown) {
             if (tempoAtual - this.ultimoDisparo2 > naveStats.tiroNum2.delay) {
+
+                this.playShootSound();
+
                 this.createShot(
                     naveStats.tiroNum2.sprite,
                     naveStats.tiroNum2.anim,
@@ -432,6 +459,9 @@ class GameScene extends Phaser.Scene{
 
         if (this.shot.L.isDown) {
             if (tempoAtual - this.ultimoDisparo3 > naveStats.tiroNum3.delay) {
+
+                this.playShootSound();
+
                 this.createShot(
                     naveStats.tiroNum3.sprite,
                     naveStats.tiroNum3.anim,
@@ -452,6 +482,33 @@ class GameScene extends Phaser.Scene{
                 tiro.play(animation);
                 tiro.setData('dano', dano);
                 tiro.setData('tipoTiro', tipoTiro)
+    }
+
+    playShootSound() {
+        if (!window.gameAudio.enabled) return;
+
+        let naveEscolhida = window.gameData.naveEscolhida;
+        let somKey = '';
+
+        switch (naveEscolhida) {
+            case 'naveUm':
+                somKey = 'somTiroNave1';
+                break;
+            case 'naveDois':
+                somKey = 'somTiroNave2';
+                break;
+            case 'naveTres':
+                somKey = 'somTiroNave3';
+                break;
+        
+            default:
+                somKey = 'somTiroNave1';
+                break;
+        }
+
+        this.sound.play(somKey, {
+            volume: window.gameAudio.volume * 0.03
+        });
     }
 
     updateRemoveShotOutScreen() {

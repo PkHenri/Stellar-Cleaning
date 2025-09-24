@@ -12,6 +12,11 @@ window.gameStyles = {
     }
 }
 
+window.gameAudio = {
+    enabled: true,
+    volume: 0.7
+}
+
 window.gameData = {
         naveEscolhida: null,
         naveConfig: {
