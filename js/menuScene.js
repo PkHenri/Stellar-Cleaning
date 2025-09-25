@@ -29,7 +29,7 @@ class MenuScene extends Phaser.Scene {
         if (window.gameAudio.enabled) {
             if (!this.musicaMenu) {
                 this.musicaMenu = this.sound.add('musicaMenu', {
-                    volume: window.gameAudio.volume * 0.008,
+                    volume: window.gameAudio.volume * 0.06,
                     loop: true
                 });
             }

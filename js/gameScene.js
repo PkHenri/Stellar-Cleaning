@@ -253,7 +253,7 @@ class GameScene extends Phaser.Scene{
                 // som explosão
                 if (window.gameAudio.enabled) {
                     this.sound.play('somExplosao', {
-                        volume: window.gameAudio.volume * 0.06
+                        volume: window.gameAudio.volume * 0.08
                     });
                 }
 
@@ -360,7 +360,7 @@ class GameScene extends Phaser.Scene{
             // som explosão
             if (window.gameAudio.enabled) {
                 this.sound.play('somExplosao', {
-                    volume: window.gameAudio.volume * 0.1
+                    volume: window.gameAudio.volume * 0.09
                 });
             }
    
@@ -507,7 +507,7 @@ class GameScene extends Phaser.Scene{
         }
 
         this.sound.play(somKey, {
-            volume: window.gameAudio.volume * 0.03
+            volume: window.gameAudio.volume * 0.06
         });
     }
 
