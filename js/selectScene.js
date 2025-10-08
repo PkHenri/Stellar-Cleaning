@@ -12,7 +12,8 @@ class SelectScene extends Phaser.Scene {
         this.load.image('selectN2', 'assets/images/sceneSelect/selectN2.png');
         this.load.image('selectN3', 'assets/images/sceneSelect/selectN3.png');
         this.load.image('arrowRight', 'assets/images/sceneSelect/arrowRight.png'); // seta
-        this.load.image('arrowLeft', 'assets/images/sceneSelect/arrowLeft.png');   // seta esquerda (opcional)
+        this.load.image('arrowLeft', 'assets/images/sceneSelect/arrowLeft.png');   // seta esquerda
+        this.load.image('Voltar', 'assets/images/quemSomos/btnVoltar.png');
     }
 
     create() {
@@ -20,6 +21,7 @@ class SelectScene extends Phaser.Scene {
         this.createResizeConfig();
         this.createShipSelectionButtons();
         this.createNavigationButtons();
+        this.createbtVoltar();
     }
 
     resetScene() {
@@ -96,6 +98,43 @@ class SelectScene extends Phaser.Scene {
     previousShip() {
         this.currentIndex = (this.currentIndex - 1 + this.shipButtons.length) % this.shipButtons.length;
         this.updateShipPositions();
+    }
+
+    createbtVoltar(){
+        const btnVoltar = this.add.image(
+            this.scale.width/2, 
+            this.scale.height/2+270, 
+            'Voltar'
+        ).setInteractive().setScale(0.7);
+
+        this.createHoverAnimation(btnVoltar);
+
+        btnVoltar.on('pointerdown', () => {
+            this.scene.start('menuScene');
+        });
+        
+    }
+
+    createHoverAnimation(button) {
+        button.on('pointerover', () => {
+            this.tweens.add({
+                targets: button,
+                scaleX: 0.9,
+                scaleY: 0.9,
+                duration: 200,
+                ease: 'Power2'
+            });
+        });
+
+        button.on('pointerout', () => {
+            this.tweens.add({
+                targets: button,
+                scaleX: 0.7,
+                scaleY: 0.7,
+                duration: 200,
+                ease: 'Power2'
+            });
+        });
     }
 
     updateShipPositions() {
